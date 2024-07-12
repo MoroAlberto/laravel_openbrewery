@@ -63,7 +63,7 @@ docker exec -it PROJECT_NAME_backend /bin/bash
 If you did not change the project name, use:
 
 ```sh
-docker exec -it local_backend /bin/bash
+docker exec -it brewery_backend /bin/bash
 ```
 
 You will be in the `/var/www/backend` directory.
