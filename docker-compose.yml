@@ -1,0 +1,80 @@
+version: '3.8'
+services:
+
+  # PHP Service
+  backend:
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    container_name: "${PROJECT_NAME}_backend"
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: backend
+    working_dir: /var/www/backend
+    volumes:
+      - ./backend/:/var/www/backend
+      - ./docker/backend/supervisor/supervisord.conf:/etc/supervisord.conf
+      - ./docker/backend/php.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./docker/backend/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./docker/backend/cacert.cer:/usr/local/etc/ssl/certs/cacert.cer
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - laravel
+
+  # Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: "${PROJECT_NAME}_webserver"
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8000:80"
+      - "443:443"
+    volumes:
+      - ./backend/:/var/www/backend
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - laravel
+
+  # MySQL Service
+  mysql:
+    image: mysql:latest
+    container_name: "${PROJECT_NAME}_mysql"
+    restart: unless-stopped
+    tty: true
+    environment:
+      MYSQL_USER: ${USER_MYSQL}
+      MYSQL_PASSWORD: ${PASS_MYSQL}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_ROOT_PASSWORD: ${PASS_ROOT_MYSQL}
+      MYSQL_ROOT_HOST: '%'
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker/mysql/dbdata/:/var/lib/mysql/
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - laravel
+
+  # PHPMYADMIN Service
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: "${PROJECT_NAME}_phpmyadmin"
+    ports:
+      - "7000:80"
+    links:
+      - mysql:mysql
+    environment:
+      MYSQL_USER: ${USER_MYSQL}
+      MYSQL_PASSWORD: ${PASS_MYSQL}
+      MYSQL_ROOT_PASSWORD: ${PASS_ROOT_MYSQL}
+      MYSQL_ROOT_HOST: '%'
+      PMA_HOST: mysql
+    networks:
+      - laravel
+
+# Docker Networks
+networks:
+  laravel:
+    driver: bridge
