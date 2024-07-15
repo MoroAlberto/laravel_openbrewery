@@ -6,7 +6,6 @@ use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -15,7 +14,7 @@ class AuthController extends Controller
      *
      * @return JsonResponse
      */
-    public function register()
+    public function register(): JsonResponse
     {
         $validator = Validator::make(request()->all(), [
             'username' => 'required',
@@ -40,7 +39,7 @@ class AuthController extends Controller
      *
      * @return JsonResponse
      */
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
         $credentials = request(['username', 'password']);
 

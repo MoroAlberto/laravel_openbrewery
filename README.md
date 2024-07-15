@@ -83,6 +83,8 @@ composer install
 Generate the application key and run the database migrations with seed:
 
 ```sh
+php artisan jwt:secret
+php artisan jwt:generate-certs
 php artisan key:generate
 php artisan migrate --seed
 ```
