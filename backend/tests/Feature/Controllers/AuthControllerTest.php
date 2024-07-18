@@ -13,10 +13,6 @@ class AuthControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        /*User::create([
-            'username' => 'root',
-            'password' => bcrypt('password')
-        ]);*/
     }
 
     /*public function test_register()

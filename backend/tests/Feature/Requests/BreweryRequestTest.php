@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Requests;
 
 use App\Models\User;
 use Tests\TestCase;
@@ -10,7 +10,7 @@ class BreweryRequestTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $token;
+    protected string $token;
     public function setUp(): void
     {
         parent::setUp();

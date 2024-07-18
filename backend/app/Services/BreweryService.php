@@ -3,16 +3,14 @@
 namespace App\Services;
 
 use App\Interfaces\BreweryServiceInterface;
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class BreweryService implements BreweryServiceInterface
 {
     protected string $apiUrl;
-    protected Client $client;
 
-    public function __construct(Client $client)
+    public function __construct()
     {
-        $this->client = $client;
         $this->apiUrl = config('services.brewery.url');
     }
 
@@ -20,7 +18,7 @@ class BreweryService implements BreweryServiceInterface
     {
         //\Log::info("Fetching breweries with page: {$page}, per_page: {$perPage}");
 
-        $response = $this->client->get("{$this->apiUrl}/breweries", [
+        $response = Http::get("{$this->apiUrl}/breweries", [
             'query' => [
                 'page' => $page,
                 'per_page' => $perPage
