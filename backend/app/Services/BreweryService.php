@@ -21,8 +21,8 @@ class BreweryService implements BreweryServiceInterface
         $response = Http::get("{$this->apiUrl}/breweries", [
             'query' => [
                 'page' => $page,
-                'per_page' => $perPage
-            ]
+                'per_page' => $perPage,
+            ],
         ]);
 
         //\Log::info("Response: " . $response->getBody()->getContents());

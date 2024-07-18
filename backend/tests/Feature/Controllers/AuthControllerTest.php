@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Controllers;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
 {
@@ -69,7 +69,7 @@ class AuthControllerTest extends TestCase
         $token = auth()->login($user);
 
         $response = $this->PostJson('/api/auth/me', [
-            'Authorization' => 'Bearer ' . $token,
+            'Authorization' => 'Bearer '.$token,
         ]);
 
         $response->assertStatus(200);
@@ -86,7 +86,7 @@ class AuthControllerTest extends TestCase
         $token = auth()->login($user);
 
         $response = $this->postJson('/api/auth/logout', [], [
-            'Authorization' => 'Bearer ' . $token,
+            'Authorization' => 'Bearer '.$token,
         ]);
 
         $response->assertStatus(200);
@@ -103,7 +103,7 @@ class AuthControllerTest extends TestCase
         $token = auth()->login($user);
 
         $response = $this->postJson('/api/auth/refresh', [], [
-            'Authorization' => 'Bearer ' . $token,
+            'Authorization' => 'Bearer '.$token,
         ]);
 
         $response->assertStatus(200);

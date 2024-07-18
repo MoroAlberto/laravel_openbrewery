@@ -8,14 +8,10 @@ use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    public function __construct(protected AuthService $authService)
-    {
-    }
+    public function __construct(protected AuthService $authService) {}
 
     /**
      * Register a User.
-     *
-     * @return JsonResponse
      */
     public function register(): JsonResponse
     {
@@ -31,8 +27,6 @@ class AuthController extends Controller
 
     /**
      * Get a JWT via given credentials.
-     *
-     * @param LoginRequest $request
      */
     public function login(LoginRequest $request): JsonResponse
     {
@@ -45,8 +39,6 @@ class AuthController extends Controller
 
     /**
      * Get the authenticated User.
-     *
-     * @return JsonResponse
      */
     public function me(): JsonResponse
     {
@@ -55,8 +47,6 @@ class AuthController extends Controller
 
     /**
      * Log the user out (Invalidate the token).
-     *
-     * @return JsonResponse
      */
     public function logout(): JsonResponse
     {
@@ -67,8 +57,6 @@ class AuthController extends Controller
 
     /**
      * Refresh a token.
-     *
-     * @return JsonResponse
      */
     public function refresh(): JsonResponse
     {

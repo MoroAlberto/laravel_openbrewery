@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
+use App\Interfaces\BreweryServiceInterface;
 use App\Interfaces\UserRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\Services\BreweryService;
-use App\Interfaces\BreweryServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

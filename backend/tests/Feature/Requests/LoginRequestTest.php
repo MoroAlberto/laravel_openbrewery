@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Requests;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class LoginRequestTest extends TestCase
 {
@@ -13,7 +13,7 @@ class LoginRequestTest extends TestCase
     {
         $response = $this->postJson('/api/auth/login', [
             'username' => '',
-            'password' => ''
+            'password' => '',
         ]);
 
         $response->assertStatus(422);
@@ -24,7 +24,7 @@ class LoginRequestTest extends TestCase
     {
         $response = $this->postJson('/api/auth/login', [
             'username' => '',
-            'password' => 'root'
+            'password' => 'root',
         ]);
 
         $response->assertStatus(422);
@@ -35,7 +35,7 @@ class LoginRequestTest extends TestCase
     {
         $response = $this->postJson('/api/auth/login', [
             'username' => 'root',
-            'password' => ''
+            'password' => '',
         ]);
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['password']);

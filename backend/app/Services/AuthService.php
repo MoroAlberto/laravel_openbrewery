@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services;
 
 use App\Interfaces\UserRepositoryInterface;
@@ -9,10 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthService
 {
-
-    public function __construct(protected UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(protected UserRepositoryInterface $userRepository) {}
 
     public function register(array $data): array
     {
@@ -27,7 +23,7 @@ class AuthService
 
         $user = $this->userRepository->create([
             'username' => $data['username'],
-            'password' => Hash::make($data['password'])
+            'password' => Hash::make($data['password']),
         ]);
 
         return ['data' => $user, 'status' => 201];
@@ -35,7 +31,7 @@ class AuthService
 
     public function login(array $credentials): array
     {
-        if (!$token = auth()->attempt($credentials)) {
+        if (! $token = auth()->attempt($credentials)) {
             return ['data' => ['error' => 'Unauthorized'], 'status' => 401];
         }
 
@@ -47,7 +43,7 @@ class AuthService
         return [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
         ];
     }
 }

@@ -8,9 +8,7 @@ use Illuminate\Http\JsonResponse;
 
 class BreweryController extends Controller
 {
-    public function __construct(protected BreweryService $breweryService)
-    {
-    }
+    public function __construct(protected BreweryService $breweryService) {}
 
     public function index(BreweryRequest $request): JsonResponse
     {

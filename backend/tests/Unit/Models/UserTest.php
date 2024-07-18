@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {
@@ -13,11 +13,11 @@ class UserTest extends TestCase
     public function testCreateUser()
     {
         $user = User::create([
-            'username' => 'testuser',
-            'password' => bcrypt('password')
+            'username' => 'Test User',
+            'password' => bcrypt('password'),
         ]);
 
         $this->assertInstanceOf(User::class, $user);
-        $this->assertEquals('testuser', $user->username);
+        $this->assertEquals('Test User', $user->username);
     }
 }

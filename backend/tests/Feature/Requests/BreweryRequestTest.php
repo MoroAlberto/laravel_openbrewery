@@ -3,20 +3,21 @@
 namespace Tests\Feature\Requests;
 
 use App\Models\User;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class BreweryRequestTest extends TestCase
 {
     use RefreshDatabase;
 
     protected string $token;
+
     public function setUp(): void
     {
         parent::setUp();
         $user = User::create([
             'username' => 'root',
-            'password' => bcrypt('password')
+            'password' => bcrypt('password'),
         ]);
         $this->token = auth()->login($user);
     }
@@ -29,7 +30,7 @@ class BreweryRequestTest extends TestCase
     public function test_valid_request_parameters()
     {
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $this->token
+            'Authorization' => 'Bearer '.$this->token,
         ])->json('GET', '/api/breweries', ['page' => 1, 'per_page' => 50]);
 
         $response->assertStatus(200);
@@ -43,7 +44,7 @@ class BreweryRequestTest extends TestCase
     public function test_invalid_page_parameter()
     {
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $this->token
+            'Authorization' => 'Bearer '.$this->token,
         ])->json('GET', '/api/breweries', ['page' => 'invalid', 'per_page' => 50]);
 
         $response->assertStatus(422);
@@ -58,7 +59,7 @@ class BreweryRequestTest extends TestCase
     public function test_invalid_per_page_parameter()
     {
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $this->token
+            'Authorization' => 'Bearer '.$this->token,
         ])->json('GET', '/api/breweries', ['page' => 1, 'per_page' => 'invalid']);
 
         $response->assertStatus(422);
@@ -73,7 +74,7 @@ class BreweryRequestTest extends TestCase
     public function test_missing_page_parameter()
     {
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $this->token
+            'Authorization' => 'Bearer '.$this->token,
         ])->json('GET', '/api/breweries', ['per_page' => 10]);
         $response->assertStatus(200);
     }
@@ -86,9 +87,8 @@ class BreweryRequestTest extends TestCase
     public function test_missing_per_page_parameter()
     {
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $this->token
+            'Authorization' => 'Bearer '.$this->token,
         ])->json('GET', '/api/breweries', ['page' => 1]);
-
 
         $response->assertStatus(200);
     }

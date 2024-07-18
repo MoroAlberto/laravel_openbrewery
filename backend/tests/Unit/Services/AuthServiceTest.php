@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Services;
 
+use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use App\Services\AuthService;
-use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Mockery;
@@ -15,6 +15,7 @@ class AuthServiceTest extends TestCase
     use RefreshDatabase;
 
     protected AuthService $authService;
+
     protected UserRepositoryInterface $userRepository;
 
     protected function setUp(): void

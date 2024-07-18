@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Repositories;
 
+use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use App\Repositories\UserRepository;
-use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -24,7 +24,7 @@ class UserRepositoryTest extends TestCase
     {
         $data = [
             'username' => 'Test User',
-            'password' => 'password'
+            'password' => 'password',
         ];
 
         $user = $this->userRepository->create($data);
