@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use App\Models\User;
+use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    public function __construct(protected AuthService $authService)
+    {
+    }
+
     /**
      * Register a User.
      *
@@ -16,39 +19,28 @@ class AuthController extends Controller
      */
     public function register(): JsonResponse
     {
-        $validator = Validator::make(request()->all(), [
-            'username' => 'required',
-            'password' => 'required|confirmed|min:8',
-        ]);
+        $data = request()->all();
+        $result = $this->authService->register($data);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+        if (isset($result['error'])) {
+            return response()->json($result['error'], $result['status']);
         }
 
-        $user = new User;
-        $user->username = request()->username;
-        $user->password = bcrypt(request()->password);
-        $user->save();
-
-        return response()->json($user, 201);
+        return response()->json($result['data'], $result['status']);
     }
-
 
     /**
      * Get a JWT via given credentials.
      *
      * @param LoginRequest $request
-     * @return JsonResponse
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        $credentials = request(['username', 'password']);
+        $credentials = $request->only('username', 'password');
+        $result = $this->authService->login($credentials);
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+        return response()->json($result['data'], $result['status']);
 
-        return $this->respondWithToken($token);
     }
 
     /**
@@ -56,7 +48,7 @@ class AuthController extends Controller
      *
      * @return JsonResponse
      */
-    public function me()
+    public function me(): JsonResponse
     {
         return response()->json(auth()->user());
     }
@@ -66,7 +58,7 @@ class AuthController extends Controller
      *
      * @return JsonResponse
      */
-    public function logout()
+    public function logout(): JsonResponse
     {
         auth()->logout();
 
@@ -78,24 +70,8 @@ class AuthController extends Controller
      *
      * @return JsonResponse
      */
-    public function refresh()
+    public function refresh(): JsonResponse
     {
-        return $this->respondWithToken(auth()->refresh());
-    }
-
-    /**
-     * Get the token array structure.
-     *
-     * @param string $token
-     *
-     * @return JsonResponse
-     */
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        return response()->json($this->authService->respondWithToken(auth()->refresh()));
     }
 }
